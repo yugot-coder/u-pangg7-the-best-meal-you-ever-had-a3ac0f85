@@ -4,6 +4,7 @@ Writes one sentence (at most 200 characters) about the best meal
 ever had to /output/entry.txt. Python standard library only.
 """
 
+import hashlib
 import os
 
 ENTRY = (
@@ -41,19 +42,35 @@ def write_entry(path, text):
 
 
 def verify_written_bytes(path, text):
-    """Read back the file and confirm its bytes are exactly the entry."""
+    """Read back the file and confirm its bytes are exactly the entry:
+    same byte length (no trailing newline may sneak in), same bytes,
+    same sha256 digest."""
     with open(path, "rb") as f:
         written = f.read()
-    if written != text.encode("utf-8"):
+    intended = text.encode("utf-8")
+    if len(written) != len(intended):
+        raise RuntimeError("read-back byte length mismatch for %s" % path)
+    if written != intended:
         raise RuntimeError("read-back mismatch: %s differs from ENTRY" % path)
+    if hashlib.sha256(written).hexdigest() != hashlib.sha256(intended).hexdigest():
+        raise RuntimeError("read-back digest mismatch for %s" % path)
     return written
+
+
+def output_path():
+    """Entry destination: $MAKEFUN_OUTPUT_DIR/entry.txt, else /output."""
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR")
+    if out_dir:
+        return os.path.join(out_dir, "entry.txt")
+    return OUTPUT_PATH
 
 
 def main():
     validate(ENTRY)
-    write_entry(OUTPUT_PATH, ENTRY)
-    verify_written_bytes(OUTPUT_PATH, ENTRY)
-    print("wrote %d chars to %s" % (len(ENTRY), OUTPUT_PATH))
+    path = output_path()
+    write_entry(path, ENTRY)
+    verify_written_bytes(path, ENTRY)
+    print("wrote %d chars to %s" % (len(ENTRY), path))
 
 
 if __name__ == "__main__":
