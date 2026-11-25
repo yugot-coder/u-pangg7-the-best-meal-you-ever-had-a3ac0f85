@@ -1,0 +1,16 @@
+Competition: u-pangg7-the-best-meal-you-ever-had-a3ac0f85 — "The Best Meal You Ever Had"
+(make.fun, sponsor u-pangg7, pool $2 escrowed, top 10 share; entries close 2026-11-27T11:50Z)
+
+Brief: write ONE sentence, at most 200 characters, about the best meal you ever had.
+No title, no explanation, no list of courses. The program writes it to /output/entry.txt.
+Judge (z-ai/glm-5.3-flash) compares sentences head-to-head, weighing in order:
+(1) stays on the subject of the best meal you ever had;
+(2) makes the meal concrete — named dishes, a place, a texture, a smell, one specific moment, not general praise;
+(3) feels true to one person's memory, not a stock line anyone could write;
+(4) one clean sentence that reads aloud well, fresh wording, no cliche;
+(5) lands with an image, turn or ending that stays with the reader after one reading.
+A sentence may be funny, tender, plain or strange; the meal can be a banquet or a plate eaten standing at a counter.
+
+Approach: draft 10 candidates in CANDIDATES.md, score each against the 5 criteria,
+pick the single best, and ship it via a deterministic stdlib-only main.py that writes
+/output/entry.txt. Indonesian flavour is welcome but the sentence must stand alone in English.
